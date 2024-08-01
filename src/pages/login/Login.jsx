@@ -1,6 +1,9 @@
-import { Button, Flex, Form, Input, Typography } from 'antd'
-import React from 'react'
+import { Flex, Form, Typography } from 'antd'
+import React, { useEffect, useState } from 'react'
+import { Button, Input, InputPassword } from '../../components/antd_components'
 import { imagePaths } from '../../constants/imagePaths'
+import { getApi } from '../../utilities/handleApi'
+import validation from '../../validation/validation'
 import {
   StyledSection,
   StyledText,
@@ -8,9 +11,23 @@ import {
   StyledWrapper,
 } from './StyledComponents'
 const { Text, Link } = Typography
-const Login = () => {
+
+const Login = (props) => {
+  const { getUser } = validation(props)
+  const [users, setUsers] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+
+  useEffect(() => {
+    const fetch = async () => {
+      setUsers(await getApi(process.env.REACT_APP_BASE_URL))
+    }
+    fetch()
+  }, [])
+
   const onFinish = (values) => {
-    console.log('Received values of form: ', values)
+    setIsLoading(true)
+    getUser(users, values)
+    setIsLoading(false)
   }
 
   return (
@@ -71,9 +88,10 @@ const Login = () => {
                 required: true,
                 message: 'Please input your Password!',
               },
+              { min: 8, message: 'Password must be minimum 8 characters.' },
             ]}
           >
-            <Input.Password
+            <InputPassword
               type='password'
               placeholder='Input Password'
             />
@@ -89,6 +107,7 @@ const Login = () => {
                 block='true'
                 type='primary'
                 htmlType='submit'
+                loading={isLoading}
               >
                 Log in
               </Button>
