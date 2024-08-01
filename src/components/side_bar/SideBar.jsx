@@ -1,10 +1,10 @@
 import { Layout, Menu, theme } from 'antd'
 import React from 'react'
-import { sideBarItems } from '../../constants/items'
+import { sideBarItems } from './items'
 const { Header, Content, Sider } = Layout
 
 const SideBar = (props) => {
-  const { content } = props
+  const { children, navigate } = props
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken()
@@ -19,7 +19,7 @@ const SideBar = (props) => {
           theme='dark'
           mode='inline'
           defaultSelectedKeys={['1']}
-          items={sideBarItems}
+          items={sideBarItems(navigate)}
         />
       </Sider>
       <Layout>
@@ -44,7 +44,7 @@ const SideBar = (props) => {
               borderRadius: borderRadiusLG,
             }}
           >
-            {content}
+            {children}
           </div>
         </Content>
       </Layout>

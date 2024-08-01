@@ -1,5 +1,6 @@
 import { getLocalStorage, setLocalStorage } from '../utilities/handleStorage'
 import * as notification from '../utilities/notification'
+
 const validation = (props) => {
   const isAdmin = () => {
     const user = JSON.parse(getLocalStorage('user'))
@@ -22,7 +23,10 @@ const validation = (props) => {
   const isLogin = () => {
     const user = getLocalStorage('user')
     if (user) return true
-    return props.navigate('/')
+    else {
+      props.navigate('/')
+      return false
+    }
   }
 
   return { getUser, isLogin, isAdmin }

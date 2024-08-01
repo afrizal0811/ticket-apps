@@ -7,7 +7,6 @@ export const StyledSection = styled.section`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: solid 1px black;
   height: 100dvh;
   width: 100dvw;
 `
