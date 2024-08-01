@@ -1,6 +1,10 @@
+import { getLocalStorage, setLocalStorage } from '../utilities/handleStorage'
 import * as notification from '../utilities/notification'
-import { setLocalStorage } from '../utilities/handleStorage'
 const validation = (props) => {
+  const isAdmin = () => {
+    const user = JSON.parse(getLocalStorage('user'))
+    return user.role === 'admin'
+  }
   const getUser = (users, values) => {
     const filteredUser = users.filter(
       (data) => data.email === values.email && data.password === values.password
@@ -8,12 +12,20 @@ const validation = (props) => {
     if (filteredUser.length > 0) {
       delete filteredUser[0].password
       setLocalStorage('user', JSON.stringify(filteredUser[0]))
-      props.navigate('/dashboard')
+      if (isAdmin()) props.navigate('/admin')
+      else props.navigate('/guest')
     } else {
       notification.error('User tidak ditemukan')
     }
   }
-  return { getUser }
+
+  const isLogin = () => {
+    const user = getLocalStorage('user')
+    if (user) return true
+    return props.navigate('/')
+  }
+
+  return { getUser, isLogin, isAdmin }
 }
 
 export default validation

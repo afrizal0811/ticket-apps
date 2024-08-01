@@ -13,9 +13,17 @@ import {
 const { Text, Link } = Typography
 
 const Login = (props) => {
-  const { getUser } = validation(props)
+  const { navigate } = props
+  const { getUser, isLogin, isAdmin } = validation(props)
   const [users, setUsers] = useState([])
   const [isLoading, setIsLoading] = useState(false)
+
+  useEffect(() => {
+    if (isLogin()) {
+      if (isAdmin()) navigate('/admin')
+      else navigate('/guest')
+    }
+  }, [isLogin, isAdmin, navigate])
 
   useEffect(() => {
     const fetch = async () => {
