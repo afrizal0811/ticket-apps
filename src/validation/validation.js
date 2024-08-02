@@ -22,7 +22,11 @@ const validation = (props) => {
 
   const isLogin = () => {
     const user = getLocalStorage('user')
-    if (user) return true
+    if (user){ 
+      if (isAdmin()) props.navigate('/admin')
+      else props.navigate('/admin')
+      return true
+    }
     else {
       props.navigate('/')
       return false
